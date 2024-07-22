@@ -1,0 +1,255 @@
+cmake_minimum_required(VERSION 3.20)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+project(Socrates
+        LANGUAGES Fortran)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+
+
+set( SOURCES
+    realtype_rd.f90
+    adjust_ir_radiance.F90
+    aggregate_cloud.F90
+    array_lib.F90
+    astro_constants_mod.F90
+    augment_channel_mod.F90
+    augment_radiance.F90
+    augment_tiled_radiance.F90
+    band_solver.F90
+    build_sph_matrix.F90
+    calc_actinic_flux_mod.F90
+    calc_brdf.F90
+    calc_cg_coeff.F90
+    calc_contrib_func.F90
+    calc_flux_ipa.F90
+    calc_gauss_weight_90.F90
+    calc_photolysis_incr_mod.F90
+    calc_radiance_ipa.F90
+    calc_surf_rad.F90
+    calc_top_rad.F90
+    calc_uplm_sol.F90
+    calc_uplm_zero.F90
+    cg_kappa_ms.F90
+    check_phf_term.F90
+    circumsolar_fraction.F90
+    cloud_maxcs_split.F90
+    column_solver.F90
+    copy_clr_full.F90
+    copy_clr_sol.F90
+    cosp2_io.f90
+    cosp_constants_mod.F90
+    cosp_def_diag.F90
+    cosp_diagnostics_mod.F90
+    cosp_errorHandling.F90
+    cosp_input_mod.F90
+    cosp_kinds.F90
+    cosp_mod.F90
+    cosp_optics.F90
+    cosp_radiation_mod.F90
+    cosp_types_mod.F90
+    def_aer.F90
+    def_atm.F90
+    def_bound.F90
+    def_cld.F90
+    def_control.F90
+    def_dimen.F90
+    def_mcica.F90
+    def_orbit.F90
+    def_out.F90
+    def_planck.F90
+    def_qy.F90
+    def_spectrum.F90
+    def_spherical_geometry.F90
+    def_ss_prop.F90
+    diff_albedo_basis.F90
+    diff_planck_source_mod.F90
+    diffusivity_factor.F90
+    eigenvalue_tri.F90
+    eig_sys.F90
+    eval_uplm.F90
+    finalise_photol_incr_mod.F90
+    gas_list_pcf.F90
+    gas_optical_properties.F90
+    gauss_angle.F90
+    gaussian_weight_pcf.F90
+    grey_opt_prop.F90
+    hemi_sph_integ.F90
+    increment_rad_cf.F90
+    inter_k.F90
+    interp1d.F90
+    inter_pt.F90
+    inter_pt_lookup.F90
+    inter_t_lookup.F90
+    ir_source.F90
+    layer_part_integ.F90
+    legendre_mod.F90
+    legendre_weight.F90
+    map_sub_bands_mod.F90
+    math_lib.F90
+    mcica_column.F90
+    mcica_sample.F90
+    mix_app_scat.F90
+    mix_column.F90
+    mixed_solar_source.F90
+    monochromatic_gas_flux.F90
+    monochromatic_ir_radiance.F90
+    monochromatic_radiance.F90
+    monochromatic_radiance_sph.F90
+    monochromatic_radiance_tseq.F90
+    mrgrnk.F90
+    optics_lib.F90
+    opt_prop_aerosol.F90
+    opt_prop_baran_mod.F90
+    opt_prop_fu_phf_mod.F90
+    opt_prop_ice_cloud.F90
+    opt_prop_inhom_corr_cairns.F90
+    opt_prop_pade_2_mod.F90
+    opt_prop_ukca_aerosol.F90
+    opt_prop_water_cloud.F90
+    orbprm_mod.F90
+    overlap_coupled.F90
+    planck_flux_band_mod.F90
+    prsc_gather_spline.F90
+    prsc_opt_prop.F90
+    quickbeam_optics.F90
+    quicksort.F90
+    radiance_calc.F90
+    rad_pcf.F90
+    read_spectrum.F90
+    rebin_esft_terms.F90
+    rescale_continuum.F90
+    rescale_phase_fnc.F90
+    rescale_tau_csr.F90
+    rescale_tau_omega.F90
+    scale_absorb.F90
+    scale_wenyi.F90
+    ses_rescale_contm.F90
+    set_cloud_geometry.F90
+    set_cloud_pointer.F90
+    set_dirn_weights.F90
+    set_level_weights.F90
+    set_matrix_pentadiagonal.F90
+    set_n_cloud_parameter.F90
+    set_n_source_coeff.F90
+    set_rad_layer.F90
+    set_truncation.F90
+    shell_sort.F90
+    single_scat_sol.F90
+    single_scattering_all.F90
+    single_scattering.F90
+    socrates_bones.F90
+    socrates_cloud_abs_diag.F90
+    socrates_cloud_ext_diag.F90
+    socrates_cloud_gen.F90
+    socrates_cloud_level_diag.F90
+    socrates_def_diag.F90
+    socrates_illuminate.F90
+    socrates_runes.F90
+    socrates_set_aer.F90
+    socrates_set_bound.F90
+    socrates_set_cld_dim.F90
+    socrates_set_cld.F90
+    socrates_set_cld_mcica.F90
+    socrates_set_control.F90
+    socrates_set_diag.F90
+    socrates_set_dimen.F90
+    socrates_set_spectrum.F90
+    socrates_set_topography.F90
+    solang_mod.F90
+    solar_coefficient_basic.F90
+    solar_source.F90
+    solinc_mod.F90
+    solpos_mod.F90
+    sol_scat_cos.F90
+    solve_band_k_eqv_scl.F90
+    solve_band_random_overlap.F90
+    solve_band_random_overlap_resort_rebin.F90
+    solve_band_ses.F90
+    solve_band_without_gas.F90
+    solver_homogen_direct.F90
+    solver_mix_direct.F90
+    solver_mix_direct_hogan.F90
+    solver_no_scat.F90
+    solver_triple_app_scat.F90
+    solver_triple.F90
+    solver_triple_hogan.F90
+    spherical_path.F90
+    spherical_solar_source.F90
+    spherical_trans_coeff.F90
+    sph_matrix_solver.F90
+    sph_solver.F90
+    spline_evaluate.F90
+    spline_fit.F90
+    sum_k.F90
+    trans_source_coeff.F90
+    triple_column.F90
+    triple_solar_source.F90
+    two_coeff_basic.F90
+    two_coeff_cloud.F90
+    two_coeff.F90
+    two_coeff_fast_lw.F90
+    two_coeff_region.F90
+    two_coeff_region_fast_lw.F90
+    two_stream.F90
+    yomhook.F90
+    errormessagelength_mod.F90
+    cosp_constants.F90
+    rad_ccf.F90
+    missing_data_mod.F90
+    parkind1.F90
+    filenamelength_mod.F90
+    cosp.F90
+    vectlib_mod.F90
+    ereport_mod.F90
+    cosp_config.F90
+    dimensions_spec_ucf.F90
+    modis_simulator.F90
+    file_manager.F90
+    quickbeam.F90
+    cosp_stats.F90
+    cosp_modis_interface.F90
+    cosp_rttov_interfaceSTUB.F90
+    cosp_misr_interface.F90
+    cosp_isccp_interface.F90
+    icarus.F90
+    cosp_calipso_interface.F90
+    lidar_simulator.F90
+    cosp_atlid_interface.F90
+    cosp_grLidar532_interface.F90
+    cosp_parasol_interface.F90
+    cosp_cloudsat_interface.F90
+    MISR_simulator.F90
+    parasol.F90
+    cosp_rttov_interfaceSTUB.F90
+    cosp_rttovSTUB.F90
+    socrates_set_atm.F90
+    nml_mod.f90
+    read_cdf3.f90
+    )
+
+find_package(OpenACC)
+
+set( NETCDF_LIBRARIES /apps/packages/netcdf_c/4.9.2-nvidia-hpcsdk/lib/libnetcdf.so.19.2.2
+    /apps/packages/netcdf_fortran/4.6.1-nvidia-hpcsdk/lib/libnetcdff.so.7.2.0 -lnetcdf -lnetcdff)
+
+add_executable(runes_driver3 
+                runes_driver3.f90
+               ${SOURCES})
+
+target_link_libraries(runes_driver3 PUBLIC ${OpenACC_Fortran_LIB_NAMES})
+target_link_libraries(runes_driver3 PUBLIC ${NETCDF_LIBRARIES})
+target_include_directories(runes_driver3 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/build)
+target_include_directories(runes_driver3 PUBLIC /apps/packages/netcdf_fortran/4.6.1-nvidia-hpcsdk/include)
+target_include_directories(runes_driver3 PUBLIC /apps/packages/compilers/nvidia-hpcsdk/Linux_x86_64/24.1/cuda/lib64/)
+target_compile_options(runes_driver3 PUBLIC ${OpenACC_Fortran_FLAGS})
+target_compile_options(runes_driver3 PUBLIC -acc -gpu=cc70 -Minline -O3)
+target_link_options(runes_driver3 PUBLIC -acc -gpu=cc70 -Minline -O3)
+set_target_properties(runes_driver3 PROPERTIES LINKER_LANGUAGE Fortran)
+set_target_properties(runes_driver3 PROPERTIES CUDA_ARCHITECTURES native)
+
+
