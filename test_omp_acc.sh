@@ -105,7 +105,7 @@ done
 
 # We need to sed vectlib to remove the yomhook calls
 sed -i 's/IF (lhook)/!IF (lhook)/' temp_dir/vectlib_mod.F90
-sed -i 's/CHARACTER(LEN=*)/!CHARACTER(LEN=*)/' temp_dir/vectlib_mod.F90
+sed -i 's/CHARACTER/!CHARACTER/' temp_dir/vectlib_mod.F90
 
 
 for file in $COPY_FILES
@@ -133,24 +133,6 @@ cp ${SOCRATES_BASE}/src/radiance_core/interp1d.F90 out_acc/.
 # PSyclone outputs opt_prop_inhom_corr_cairns.F90 with an error for the NVidia compiler
 # Note that if this file is changed in socrates this command won't work.
 printf '%s\n' '13m29' 'wq' | ed -s out_acc/opt_prop_inhom_corr_cairns.F90
-
-# Fix issues with hoisting arrays - this is disabled with OpenMP and could potentially be disabled for acc as well.
-#sed -i "1 s/module eigenvalue_tri_mod/module eigenvalue_tri_mod\n  use realtype_rd, only : realk/" out_acc/eigenvalue_tri.F90
-#sed -i "1 s/module mixed_solar_source_mod/module mixed_solar_source_mod\n  use realtype_rd, only : realk/" out_acc/mixed_solar_source.F90
-#sed -i "1 s/module inter_k_mod/module inter_k_mod\n  use realtype_rd, only : realk/" out_acc/inter_k.F90
-#sed -i "1 s/module calc_photolysis_incr_mod/module calc_photolysis_incr_mod\n  use realtype_rd, only : realk/" out_acc/calc_photolysis_incr_mod.F90
-#sed -i "1 s/module monochromatic_gas_flux_mod/module monochromatic_gas_flux_mod\n  use realtype_rd, only : realk/" out_acc/monochromatic_gas_flux.F90
-#sed -i "1 s/module rescale_phase_fnc_mod/module rescale_phase_fnc_mod\n  use realtype_rd, only : realk/" out_acc/rescale_phase_fnc.F90
-#sed -i "1 s/module calc_top_rad_mod/module calc_top_rad_mod\n  use realtype_rd, only : realk/" out_acc/calc_top_rad.F90
-#sed -i "1 s/module overlap_coupled_mod/module overlap_coupled_mod\n  use realtype_rd, only : realk/" out_acc/overlap_coupled.F90
-#sed -i "1 s/module set_dirn_weights_mod/module set_dirn_weights_mod\n  use realtype_rd, only : realk/" out_acc/set_dirn_weights.F90
-#sed -i "1 s/module single_scat_sol_mod/module single_scat_sol_mod\n  use realtype_rd, only : realk/" out_acc/single_scat_sol.F90
-#sed -i "1 s/module inter_pt_lookup_mod/module inter_pt_lookup_mod\n  use realtype_rd, only : realk/" out_acc/inter_pt_lookup.F90
-#sed -i "1 s/module opt_prop_ukca_aerosol_mod/module opt_prop_ukca_aerosol_mod\n  use realtype_rd, only : realk/" out_acc/opt_prop_ukca_aerosol.F90
-#sed -i "1 s/module mix_app_scat_mod/module mix_app_scat_mod\n  use realtype_rd, only : realk/" out_acc/mix_app_scat.F90
-#sed -i "1 s/module solar_source_mod/module solar_source_mod\n  use realtype_rd, only : realk/" out_acc/solar_source.F90
-#sed -i "1 s/module solar_coefficient_basic_mod/module solar_coefficient_basic_mod\n  use realtype_rd, only : realk/" out_acc/solar_coefficient_basic.F90
-#sed -i "1 s/module spherical_trans_coeff_mod/module spherical_trans_coeff_mod\n  use realtype_rd, only : realk/" out_acc/spherical_trans_coeff.F90
 
 
 # Psyclone can't handle this file as it can't understand some of the function calls as not arrays

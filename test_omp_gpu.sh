@@ -105,7 +105,7 @@ done
 
 # We need to sed vectlib to remove the yomhook calls
 sed -i 's/IF (lhook)/!IF (lhook)/' temp_dir/vectlib_mod.F90
-sed -i 's/CHARACTER(LEN=*)/!CHARACTER(LEN=*)/' temp_dir/vectlib_mod.F90
+sed -i 's/CHARACTER/!CHARACTER/' temp_dir/vectlib_mod.F90
 
 
 for file in $COPY_FILES
